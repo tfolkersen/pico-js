@@ -1,10 +1,10 @@
 
 async function _init() {
-    let vSource = `
-        attribute vec3 a_Position;
-        attribute vec3 a_Color;
+    let vSource = `#version 300 es
+        in vec3 a_Position;
+        in vec3 a_Color;
 
-        varying vec3 v_Color;
+        out vec3 v_Color;
 
         void main() {
             gl_Position = vec4(a_Position, 1.0);
@@ -12,15 +12,15 @@ async function _init() {
         }
     `;
 
-    let fSource = `
+    let fSource = `#version 300 es
         precision lowp float;
 
-        varying vec3 v_Color;
+        in vec3 v_Color;
 
-        varying vec3 v_Meme;
+        out vec4 FragColor;
 
         void main() {
-            gl_FragColor = vec4(v_Color, 1.0);
+            FragColor = vec4(v_Color, 1.0);
         }
     `;
 
@@ -99,13 +99,13 @@ async function _update() {
         w += 1;
     }
 
-    //cls([0.6, 0.6, 0.6]);
+    cls([0.6, 0.6, 0.6]);
 
-    //rectfill(1, 1, 1, 1, [1.0, 1.0, 0.0]);
-    //rect(x, y, x + w, y + h, [0.0, 1.0, 1.0]);
+    rectfill(1, 1, 1, 1, [1.0, 1.0, 0.0]);
+    rect(x, y, x + w, y + h, [0.0, 1.0, 1.0]);
 
-    //rectfill(5, 5, 6, 6, [1.0, 0.0, 1.0]);
-    //rect(4, 4, 6, 6, [0.0, 1.0, 1.0]);
+    rectfill(5, 5, 6, 6, [1.0, 0.0, 1.0]);
+    rect(4, 4, 6, 6, [0.0, 1.0, 1.0]);
     
     let color1 = [Math.random(), Math.random(), Math.random()];
     let color2 = color1.map((x) => 1 - x);
@@ -122,6 +122,10 @@ async function _update() {
     }
     */
 
-    //rectfill(10, 10, 160 - 10, 144 - 10, [0.25, 0.0, 0.5]);
+    cls([1, 0, 1]);
+    fillp("0011" + "0011" + "1100" + "1100");
+    rectfill(0, 0, 159, 143, [0, 1, 0]);
+
 
 }
+let bits = 0;

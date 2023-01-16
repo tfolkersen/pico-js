@@ -12,7 +12,7 @@ let displayOptions = {
     width: 160,
     height: 144,
     scale: 4,
-    fps: 1,
+    fps: 60,
 };
 let gl;
 
@@ -256,7 +256,7 @@ async function __gameLoop() {
 
     const t1 = performance.now();
     const tdelta = t1 - t0;
-    console.log(tdelta);
+    //console.log(tdelta);
     setTimeout(__gameLoop, (1000 / displayOptions.fps) - tdelta);
 }
 

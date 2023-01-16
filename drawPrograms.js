@@ -8,18 +8,16 @@ async function __initDrawPrograms() {
             2, 3, 0,
         ]);
 
-        let vshader1Source = `
-        //#version 300 es
-
+        let vshader1Source = `#version 300 es
             #define WIDTH ${displayOptions.width}.0
             #define HEIGHT ${displayOptions.height}.0
-            attribute float a_Index;
+            in float a_Index;
 
             uniform vec4 u_Rect;
             uniform vec2 u_Camera;
 
-            varying vec2 v_IntPosition;
-            varying vec4 v_Rect;
+            out vec2 v_IntPosition;
+            out vec4 v_Rect;
 
             void main() {
                 v_Rect = u_Rect;
@@ -52,8 +50,7 @@ async function __initDrawPrograms() {
             }
         `;
 
-        let fshader1Source = `
-            //#version 300 es
+        let fshader1Source = `#version 300 es
             precision highp float;
 
             uniform vec3 u_Color;
@@ -61,25 +58,33 @@ async function __initDrawPrograms() {
 
             uniform int u_Fillp;
 
-            varying vec4 v_Rect;
+            in vec4 v_Rect;
 
-            varying vec2 v_IntPosition;
+            in vec2 v_IntPosition;
+
+            out vec4 FragColor;
 
             void main() {
-                gl_FragColor = vec4(u_Color, 1.0);
+                FragColor = vec4(u_Color, 1.0);
                 if (!u_Solid) {
                     float dx = min(abs(v_IntPosition.x - v_Rect.x), abs(v_IntPosition.x - v_Rect.z));
                     float dy = min(abs(v_IntPosition.y - v_Rect.y), abs(v_IntPosition.y - v_Rect.w));
 
                     if (dx > 1.0 && dy > 1.0) {
-                        gl_FragColor.a = 0.0;
+                        FragColor.a = 0.0;
                     }
                 }
 
-             //   int row = int(v_IntPosition.y) % 4;
-             //   int col = int(v_IntPosition.x) % 4;
+                int row = int(v_IntPosition.y) % 4;
+                int col = int(v_IntPosition.x) % 4;
 
-             //   bool bit = (u_Fillp >> row) != 0;
+                row = 3 - row;
+
+                bool bit = (((u_Fillp >> (row * 4)) & 0xF) & (8 >> col)) != 0;
+
+                if (bit) {
+                    FragColor.a = 0.0;
+                }
 
             }
         `;
@@ -125,7 +130,7 @@ async function __rectDraw(x1, y1, x2, y2, solid, color) {
     gl.uniform2fv(system.__rectshader.locations["u_Camera"], [system.__cameraX, system.__cameraY]);
     gl.uniform3fv(system.__rectshader.locations["u_Color"], color);
     gl.uniform1f(system.__rectshader.locations["u_Solid"], solid);
-    //gl.uniform1i(system.__rectshader.locations["u_Fillp"], system.__fillp);
+    gl.uniform1i(system.__rectshader.locations["u_Fillp"], system.__fillp);
 
     gl.drawArrays(gl.TRIANGLES, 0, 6);
 
@@ -139,5 +144,8 @@ async function cls(color = [0, 0, 0]) {
 }
 
 async function fillp(pattern = 0) {
+    if (typeof pattern === "string") {
+        pattern = parseInt(pattern, 2);
+    }
     system.__fillp = pattern;
 }
