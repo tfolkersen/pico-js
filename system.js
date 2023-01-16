@@ -5,6 +5,7 @@ let system = {
     __cameraX: 0,
     __cameraY: 0,
     color: [1, 1, 1],
+    color2: null,
     __fillp: 0,
 };
 
@@ -12,7 +13,7 @@ let displayOptions = {
     width: 160,
     height: 144,
     scale: 4,
-    fps: 60,
+    fps: 30,
 };
 let gl;
 
@@ -245,7 +246,7 @@ async function __gameLoop() {
         await _update();
     }
 
-    if (typeof _draw === "_draw") {
+    if (typeof _draw === "function") {
         await _draw();
     }
 
