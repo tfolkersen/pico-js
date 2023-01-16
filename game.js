@@ -48,7 +48,6 @@ let w = 2;
 let h = 2;
 
 async function _update() {
-    /*
     const FSIZE = Float32Array.BYTES_PER_ELEMENT;
     //Bind stuff
     
@@ -99,9 +98,8 @@ async function _update() {
     if (buttons.key_ArrowRight) {
         w += 1;
     }
-    */
 
-    cls([1, 1, 1]);
+    //cls([0.6, 0.6, 0.6]);
 
     //rectfill(1, 1, 1, 1, [1.0, 1.0, 0.0]);
     //rect(x, y, x + w, y + h, [0.0, 1.0, 1.0]);
@@ -112,6 +110,7 @@ async function _update() {
     let color1 = [Math.random(), Math.random(), Math.random()];
     let color2 = color1.map((x) => 1 - x);
 
+    /*
     for (let i = 0; i < 160; i++) {
         for (let j = 0; j < 144; j++) {
             let color = color1;
@@ -121,6 +120,8 @@ async function _update() {
             rectfill(i, j, i, j, color);
         }
     }
+    */
 
+    //rectfill(10, 10, 160 - 10, 144 - 10, [0.25, 0.0, 0.5]);
 
 }

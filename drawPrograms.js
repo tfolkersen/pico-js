@@ -9,6 +9,8 @@ async function __initDrawPrograms() {
         ]);
 
         let vshader1Source = `
+        //#version 300 es
+
             #define WIDTH ${displayOptions.width}.0
             #define HEIGHT ${displayOptions.height}.0
             attribute float a_Index;
@@ -51,10 +53,14 @@ async function __initDrawPrograms() {
         `;
 
         let fshader1Source = `
+            //#version 300 es
             precision highp float;
 
             uniform vec3 u_Color;
             uniform bool u_Solid;
+
+            uniform int u_Fillp;
+
             varying vec4 v_Rect;
 
             varying vec2 v_IntPosition;
@@ -69,12 +75,18 @@ async function __initDrawPrograms() {
                         gl_FragColor.a = 0.0;
                     }
                 }
+
+             //   int row = int(v_IntPosition.y) % 4;
+             //   int col = int(v_IntPosition.x) % 4;
+
+             //   bool bit = (u_Fillp >> row) != 0;
+
             }
         `;
 
         system.__rectshader = new ShaderProgram(vshader1Source, fshader1Source, {
             attributes: ["a_Index"],
-            uniforms: ["u_Camera", "u_Rect", "u_Color", "u_Solid"],
+            uniforms: ["u_Camera", "u_Rect", "u_Color", "u_Solid", "u_Fillp"],
         });
 
         system.__rectshaderBuffer = gl.createBuffer();
@@ -113,6 +125,7 @@ async function __rectDraw(x1, y1, x2, y2, solid, color) {
     gl.uniform2fv(system.__rectshader.locations["u_Camera"], [system.__cameraX, system.__cameraY]);
     gl.uniform3fv(system.__rectshader.locations["u_Color"], color);
     gl.uniform1f(system.__rectshader.locations["u_Solid"], solid);
+    //gl.uniform1i(system.__rectshader.locations["u_Fillp"], system.__fillp);
 
     gl.drawArrays(gl.TRIANGLES, 0, 6);
 
@@ -123,4 +136,8 @@ async function __rectDraw(x1, y1, x2, y2, solid, color) {
 async function cls(color = [0, 0, 0]) {
     gl.clearColor(color[0], color[1], color[2], 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+}
+
+async function fillp(pattern = 0) {
+    system.__fillp = pattern;
 }

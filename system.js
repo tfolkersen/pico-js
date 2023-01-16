@@ -5,6 +5,7 @@ let system = {
     __cameraX: 0,
     __cameraY: 0,
     color: [1, 1, 1],
+    __fillp: 0,
 };
 
 let displayOptions = {
@@ -270,6 +271,8 @@ async function main() {
     document.body.appendChild(system.canvas);
 
     gl = system.canvas.getContext("webgl2");
+
+
 
     __buttonList.forEach((button) => {
         buttons[button[1]] = false;
