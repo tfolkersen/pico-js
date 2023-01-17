@@ -18,7 +18,7 @@ function _update() {
     rectfill(x1, y1, x2, y2, [0.5, 0.5, 0.5]);
     fillp("1000" + "0100" + "0010" + "1111");
     fillp();
-    ovalfill(x1, y1, x2, y2, [1, 0, 1], [1, 0, 0]);
+    oval(x1, y1, x2, y2, [1, 0, 1], [1, 0, 0]);
 
     fillp();
     circfill(cx, cy, r, [1, 0, 1]);

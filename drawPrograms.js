@@ -441,6 +441,10 @@ async function ovalfill(x1, y1, x2, y2, color = system.color, color2 = system.co
     __ovalDraw(x1, y1, x2, y2, true, color, color2);
 }
 
+async function oval(x1, y1, x2, y2, color = system.color, color2 = system.color2) {
+    __ovalDraw(x1, y1, x2, y2, false, color, color2);
+}
+
 async function __ovalDraw(x1, y1, x2, y2, solid, color, color2) {
     let xCoords = [x1, x2];
     let yCoords = [y1, y2];
